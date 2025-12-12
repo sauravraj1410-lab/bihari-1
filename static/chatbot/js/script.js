@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const chatMessages = document.getElementById('chat-messages');
     const chatHistory = document.querySelector('.chat-history');
-    
+
+    // NEW DOM Elements (added)
+    const sidebar = document.querySelector('.sidebar');
+    const bottomNavIcons = document.querySelectorAll('.bottom-nav i');
+
     // API Endpoint
     const API_URL = '/api/chat/';
     
@@ -204,10 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load a specific conversation
     function loadConversation(chat) {
-        // Clear current chat
         chatMessages.innerHTML = '';
         
-        // Add welcome message
         const welcomeMessage = document.createElement('div');
         welcomeMessage.className = 'welcome-message';
         welcomeMessage.innerHTML = `
@@ -224,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         chatMessages.appendChild(welcomeMessage);
         
-        // Add the conversation
         addMessage('user', chat.user);
         addMessage('bot', chat.bot);
     }
@@ -250,7 +251,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return cookieValue;
     }
-    
+
+    /* ------------------------------------------- */
+    /*          NEW ADDED FUNCTIONS BELOW          */
+    /* ------------------------------------------- */
+
+    // Toggle Sidebar (Mobile)
+    window.toggleSidebar = function () {
+        sidebar.classList.toggle('hidden');
+    };
+
+    // Dark Mode Toggle
+    window.toggleDarkMode = function () {
+        document.body.classList.toggle('dark-mode');
+    };
+
+    // Floating New Chat Button
+    window.startNewChat = function () {
+        chatMessages.innerHTML = "";
+        addMessage("bot", "New chat started! How can I assist you?");
+    };
+
+    // Bottom Navigation Highlight (Optional)
+    bottomNavIcons.forEach(icon => {
+        icon.addEventListener("click", () => {
+            bottomNavIcons.forEach(i => i.classList.remove("active"));
+            icon.classList.add("active");
+        });
+    });
+
     // Initialize the app
     init();
 });
